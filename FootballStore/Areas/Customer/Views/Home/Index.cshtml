@@ -1,0 +1,39 @@
+﻿@model FootballStore.DataAccess.ViewModels.FilterVM
+
+@{
+    ViewData["Title"] = "Домашняя страница";
+}
+
+<div class="row">
+    <div class="col-8">
+        <form method="get" action="@Url.Action("Filter", "Home")">
+            <input type="text" name="query" placeholder="Введите запрос для поиска" />
+            <button type="submit">Поиск</button>
+        </form>
+
+        <div class="row pb-4">
+            @foreach (var item in @Model.products)
+            {
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">Цена: @item.Price.ToString("0.00")</p>
+                        <a asp-action="Details" asp-controller="Home" asp-route-productId="@item.Id" class="btn btn-primary">Детали</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-4">
+        <h2>Категории</h2>
+        <ul class="list-group">
+            <a asp-action="Index" asp-controller="Home" class="list-group-item">Все</a>
+            @foreach (var category in @Model.Categories)
+            {
+                <a asp-action="Filter" asp-controller="Home" asp-route-categoryid="@category.Id" class="list-group-item">@category.Name</a>
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+﻿@model FootballStore.Models.Cart
+<h1>Детали</h1>
+<form method="post">
+    <div class="row">
+        <div class="col-4">
+            <img src="@Model.Product.ImageUrl" width="200" height="200"/>
+            <input type="hidden" asp-for="ProductId"/>
+        </div>
+        <div class="col-8">
+            <label asp-for="Product.Name">Название: @Model.Product.Name</label>
+            <label asp-for="Product.Description">Описание: @Model.Product.Description</label>
+            <label asp-for="Product.Price">Цена: @Model.Product.Price.ToString("0.00")</label>
+            <label asp-for="Product.Category.Id">Категория: @Model.Product.Category.Name</label>
+            <div class="form-control">
+                <label asp-for="Count"></label>
+                <input asp-for="Count" class="form-control" />
+                <span asp-validation-for="Count" class="text-danger"></span>
+            </div>
+            <div class="form-control">
+                <button class="btn btn-success" asp-action="Index" asp-controller="Home">Назад</button>
+                <button class="btn btn-dark" type="submit">Добавить</button>
+            </div>
+        </div>
+    </div>
+</form>

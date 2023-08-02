@@ -1,13 +1,10 @@
-﻿using FootballStore.DataAccess.Repository;
+﻿using FootballStore.DataAccess.Repository.Interfaces;
 using FootballStore.DataAccess.ViewModels;
 using FootballStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Data.SqlClient.Server;
 using System.Diagnostics;
 using System.Security.Claims;
-using System.Security.Cryptography.Xml;
 
 namespace FootballStore.Areas.Customer.Controllers
 {
@@ -17,7 +14,7 @@ namespace FootballStore.Areas.Customer.Controllers
         private readonly ILogger<HomeController> _logger;
         private IActionUnit _action;
         public FilterVM ProductVM { get; set; }
-        
+
         public HomeController(ILogger<HomeController> logger, IActionUnit action)
         {
             _logger = logger;
@@ -71,7 +68,7 @@ namespace FootballStore.Areas.Customer.Controllers
                 {
                     _action.Cart.Add(cart);
                     _action.Save();
-                    
+
                 }
                 else
                 {
@@ -81,7 +78,7 @@ namespace FootballStore.Areas.Customer.Controllers
             }
             return RedirectToAction("Index");
         }
-        
+
         public IActionResult Privacy()
         {
             return View();

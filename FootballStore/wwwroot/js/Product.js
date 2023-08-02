@@ -12,7 +12,7 @@ $(document).ready(function () {
                 "render": function (data) {
                     return `
                         <a href="/Admin/Product/CreateUpdate?id=${data}"><i class="bi bi-pencil-square">изменить</i></a>
-                        <a onclick="RemoveProduct('/Admin/Product/Delete/${data}')"><i class="bi bi-trash">удалить</i></a>
+                        <a href="/Admin/Product/Delete?id=${data}"><i class="bi bi-pencil-square">удалить</i></a>
                     `;
                 }
             }
@@ -20,29 +20,3 @@ $(document).ready(function () {
     });
 });
 
-function RemoveProduct(url) {
-    Swal.fire({
-        title: 'Удалить?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Да'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: url,
-                type: 'DELETE', // Здесь у вас была пропущена запятая
-                success: function (data) {
-                    if (data.success) {
-                        dtable.ajax.reload();
-                        toastr.success(data.message);
-                    } else {
-                        toastr.error(data.message);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    toastr.error("Произошла ошибка при удалении товара.");
-                }
-            });
-        }
-    });
-}

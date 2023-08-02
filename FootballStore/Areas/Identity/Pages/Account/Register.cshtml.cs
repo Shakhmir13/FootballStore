@@ -2,24 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using FootballStore.Models;
 using FootballStore.Utility;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace FootballStore.Areas.Identity.Pages.Account
 {
@@ -123,7 +116,7 @@ namespace FootballStore.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Mail, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Mail, CancellationToken.None);
-                user.Name=Input.Name;
+                user.Name = Input.Name;
                 user.Address = Input.Address;
                 user.City = Input.City;
                 user.Mail = Input.Mail;

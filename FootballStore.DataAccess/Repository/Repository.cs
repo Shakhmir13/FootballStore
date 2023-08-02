@@ -1,11 +1,8 @@
 ﻿using FootballStore.DataAccess.Data;
+using FootballStore.DataAccess.Repository.Interfaces;
+using FootballStore.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FootballStore.DataAccess.Repository
 {
@@ -27,8 +24,8 @@ namespace FootballStore.DataAccess.Repository
         {
             _dbSet.Remove(entity);
         }
-        public void DeleteRange(IEnumerable<T> entitiy) 
-        { 
+        public void DeleteRange(IEnumerable<T> entitiy)
+        {
             _dbSet.RemoveRange(entitiy);
         }
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? predicate = null, string? includeProperties = null)
@@ -47,18 +44,22 @@ namespace FootballStore.DataAccess.Repository
             }
             return query.ToList();
         }
-        public T GetT(Expression<Func<T,bool>> predicate, string? includeProperties = null)
+        public T GetT(Expression<Func<T, bool>> predicate, string? includeProperties = null)
         {
             IQueryable<T> query = _dbSet;
             query = query.Where(predicate);
             if (includeProperties != null)
             {
-                foreach (var item in includeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(item);
                 }
             }
             return query.FirstOrDefault();
+        }
+        public void Update(T entity)
+        {
+            _dbSet.Update(entity);
         }
     }
 }

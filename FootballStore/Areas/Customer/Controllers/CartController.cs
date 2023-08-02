@@ -1,4 +1,4 @@
-﻿using FootballStore.DataAccess.Repository;
+﻿using FootballStore.DataAccess.Repository.Interfaces;
 using FootballStore.DataAccess.ViewModels;
 using FootballStore.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +33,7 @@ namespace FootballStore.Areas.Customer.Controllers
             return View(vm);
         }
         public IActionResult Summary()
-        { 
+        {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             vm = new CartVM()
@@ -46,7 +46,7 @@ namespace FootballStore.Areas.Customer.Controllers
             vm.Order.Address = user.Address;
             vm.Order.City = user.City;
             vm.Order.Phone = user.PhoneNumber;
-            
+
             foreach (var item in vm.ListOfCart)
             {
                 vm.Order.Total += (item.Product.Price * item.Count);
@@ -62,10 +62,10 @@ namespace FootballStore.Areas.Customer.Controllers
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             var cart = _action.Cart.GetT(x => x.ApplicationUserId == claims.Value, includeProperties: "Product");
             vm.ListOfCart = _action.Cart.GetAll(x => x.ApplicationUserId == claims.Value, includeProperties: "Product");
-            
+
             vm.Order.ApplicationUserId = claims.Value;
-            vm.Order.DateOfOrder = DateTime.Now.ToUniversalTime();    
-            
+            vm.Order.DateOfOrder = DateTime.Now.ToUniversalTime();
+
 
             foreach (var item in vm.ListOfCart)
             {
@@ -85,7 +85,7 @@ namespace FootballStore.Areas.Customer.Controllers
                 _action.OrderDetail.Add(detail);
                 _action.Save();
             }
-     
+
             _action.Cart.Delete(cart);
             _action.Save();
             return RedirectToAction("Index");
@@ -94,7 +94,7 @@ namespace FootballStore.Areas.Customer.Controllers
         [HttpGet]
         public IActionResult plus(int id)
         {
-            var cart = _action.Cart.GetT(x=>x.Id== id);
+            var cart = _action.Cart.GetT(x => x.Id == id);
             _action.Cart.IncrementCartItem(cart, 1);
             _action.Save();
             return RedirectToAction(nameof(Index));

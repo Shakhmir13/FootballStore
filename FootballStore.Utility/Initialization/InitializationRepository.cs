@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using FootballStore.DataAccess.Data;
 using FootballStore.Models;
-using FootballStore.DataAccess.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FootballStore.Utility.Initialization
 {
@@ -54,7 +48,7 @@ namespace FootballStore.Utility.Initialization
                 ApplicationUser user = _context.ApplicationUsers.FirstOrDefault(x => x.Email == "paltushev97@mail.ru");
                 _userManager.AddToRoleAsync(user, WebSiteRole.Role_Admin).GetAwaiter().GetResult();
             }
-            
+
             return;
 
         }

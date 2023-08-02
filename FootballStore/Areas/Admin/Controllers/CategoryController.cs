@@ -1,4 +1,4 @@
-﻿using FootballStore.DataAccess.Repository;
+﻿using FootballStore.DataAccess.Repository.Interfaces;
 using FootballStore.DataAccess.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ namespace FootballStore.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private IActionUnit _action;
-        public CategoryController(IActionUnit action) 
+        public CategoryController(IActionUnit action)
         {
             _action = action;
         }
@@ -45,8 +45,8 @@ namespace FootballStore.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateUpdate(CategoryVM vm) 
-        { 
+        public IActionResult CreateUpdate(CategoryVM vm)
+        {
             if (ModelState.IsValid)
             {
                 if (vm.category.Id == 0)
@@ -68,7 +68,7 @@ namespace FootballStore.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            if (id == null || id ==0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }

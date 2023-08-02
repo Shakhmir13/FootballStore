@@ -1,10 +1,11 @@
 using FootballStore.DataAccess.Data;
-using Microsoft.EntityFrameworkCore;
 using FootballStore.DataAccess.Repository;
-using Microsoft.AspNetCore.Identity;
-using FootballStore.Utility.Initialization;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using FootballStore.DataAccess.Repository.Interfaces;
 using FootballStore.Utility;
+using FootballStore.Utility.Initialization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProvid
 
 builder.Services.AddScoped<IActionUnit, ActionUnit>();
 builder.Services.AddScoped<IInitialization, InitializationRepository>();
-builder.Services.AddScoped<IEmailSender, Registration>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.ConfigureApplicationCookie(option =>
 {
     option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
@@ -41,7 +42,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 dataSedding();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 app.MapRazorPages();

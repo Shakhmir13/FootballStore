@@ -1,11 +1,8 @@
-﻿using FootballStore.DataAccess.Repository;
-using FootballStore.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
+﻿using FootballStore.DataAccess.Repository.Interfaces;
 using FootballStore.DataAccess.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FootballStore.Areas.Admin.Controllers
 {
@@ -20,42 +17,23 @@ namespace FootballStore.Areas.Admin.Controllers
             _action = action;
             _hostingEnvironment = hostingEnvironment;
         }
-        
+
         public IActionResult AllProducts()
         {
             var products = _action.Product.GetAll(includeProperties: "Category");
             return Json(new { data = products });
         }
-        
+
         public IActionResult Index()
         {
-            //ProductVM productVM = new ProductVM();
-            //productVM.Products = _action.Product.GetAll();
+            
             return View();
         }
 
-        //[HttpGet]
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Create(Category category)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _action.CAtegory.Add(category);
-        //        _action.Save();
-        //        TempData["success"] = "Категория создана";
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(category);
-        //}
+        
 
         [HttpGet]
-        public IActionResult CreateUpdate(int? id) 
+        public IActionResult CreateUpdate(int? id)
         {
             ProductVM vm = new ProductVM()
             {
@@ -90,13 +68,13 @@ namespace FootballStore.Areas.Admin.Controllers
                 if (file != null)
                 {
                     string uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "ProductImage");
-                    fileName = Guid.NewGuid().ToString()+file.FileName;
+                    fileName = Guid.NewGuid().ToString() + file.FileName;
                     string filePath = Path.Combine(uploadPath, fileName);
 
-                    if (vm.product.ImageUrl!=null)
+                    if (vm.product.ImageUrl != null)
                     {
                         var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, vm.product.ImageUrl.TrimStart('\\'));
-                        if(System.IO.File.Exists(oldImagePath))
+                        if (System.IO.File.Exists(oldImagePath))
                         {
                             System.IO.File.Delete(oldImagePath);
                         }
@@ -124,41 +102,41 @@ namespace FootballStore.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpGet]
-        //public IActionResult Delete(int? id)
-        //{
-        //    if (id == null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var category = _action.Category.GetT(x => x.Id == id);
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(category);
-        //}
-
-        [HttpDelete]
+        [HttpGet]
         public IActionResult Delete(int? id)
         {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
             var product = _action.Product.GetT(x => x.Id == id);
-            if (product != null)
+            if (product == null)
             {
-                return Json(new { success = false, message = "Ошибка" });
+                return NotFound();
             }
-            else
-            {
-                var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, product.ImageUrl.TrimStart('\\'));
-                if (System.IO.File.Exists(oldImagePath))
-                {
-                    System.IO.File.Delete(oldImagePath);
-                }
-                _action.Product.Delete(product);
-                _action.Save();
-                return Json(new { success = true, message = "Товар удален"});
-            }
+            return View(product);
         }
-        
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteData(int? id)
+        {
+            
+            var product = _action.Product.GetT(x => x.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, product.ImageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+            _action.Product.Delete(product);
+            _action.Save();
+            TempData["success"] = "Удалено";
+            return RedirectToAction("Index");
+        }
+
     }
 }

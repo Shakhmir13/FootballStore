@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace FootballStore.DataAccess.Repository
 {
@@ -14,5 +9,6 @@ namespace FootballStore.DataAccess.Repository
         void Add(T entity);
         void Delete(T entity);
         void DeleteRange(IEnumerable<T> entity);
+        void Update(T entity);
     }
 }

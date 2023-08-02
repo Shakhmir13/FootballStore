@@ -1,6 +1,7 @@
 ﻿using FootballStore.DataAccess.Repository.Interfaces;
 using FootballStore.Models;
 using Microsoft.AspNetCore.Mvc;
+using Telegram.Bot.Types;
 
 
 namespace FootballStore.API
@@ -104,7 +105,7 @@ namespace FootballStore.API
         public IActionResult UpdateCategoryById(int id, [FromBody] Category updatedcategory)
         {
             var category = _action.Category.GetT(x => x.Id == id);
-            if (category == null) { return NotFound("Продукт не найден."); }
+            if (category == null) { return NotFound("Категория не найдена."); }
             _action.Category.Update(updatedcategory);
             _action.Save();
             return Ok(category);
@@ -114,10 +115,10 @@ namespace FootballStore.API
         public IActionResult DeleteCategoryById(int id)
         {
             var category = _action.Category.GetT(x => x.Id == id);
-            if (category == null) { return NotFound("Продукт не найден."); }
+            if (category == null) { return NotFound("Категория не найдена."); }
             _action.Category.Delete(category);
             _action.Save();
-            return Ok("Продукт успешно удален.");
+            return Ok("Категория успешно удалена.");
         }
     }
 
@@ -178,6 +179,64 @@ namespace FootballStore.API
                 }
                 return Ok(orderdetails);
             }
+        }
+    }
+
+    [ApiController]
+    [Route("api/users")]
+    public class UsersController : ControllerBase
+    {
+        private IActionUnit _action;
+        public UsersController(IActionUnit action)
+        {
+            _action = action;
+        }
+
+        [HttpGet]
+        public IActionResult GetAllUsers()
+        {
+            var users = _action.ApplicationUser.GetAll();
+            return Ok(users);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetUserById(string id)
+        {
+            var user = _action.ApplicationUser.GetT(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
+        [HttpPost]
+        public IActionResult CreateNewUser([FromBody] ApplicationUser user)
+        {
+            if (user == null) { return BadRequest("Некорректные данные"); }
+            _action.ApplicationUser.Add(user);
+            _action.Save();
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateUserById(string id, [FromBody] ApplicationUser updateduser)
+        {
+            var user = _action.ApplicationUser.GetT(x => x.Id == id);
+            if (user == null) { return NotFound("Пользователь не найден."); }
+            _action.ApplicationUser.Update(updateduser);
+            _action.Save();
+            return Ok(user);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUserById(string id)
+        {
+            var user = _action.ApplicationUser.GetT(x => x.Id == id);
+            if (user == null) { return NotFound("Продукт не найден."); }
+            _action.ApplicationUser.Delete(user);
+            _action.Save();
+            return Ok("Пользователь успешно удален.");
         }
     }
 }

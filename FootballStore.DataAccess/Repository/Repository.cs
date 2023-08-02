@@ -57,6 +57,22 @@ namespace FootballStore.DataAccess.Repository
             }
             return query.FirstOrDefault();
         }
+        public void IncrementCartItem(Cart cartItem, int count)
+        {
+            var cartDB = _context.Carts.FirstOrDefault(x => x.Id == cartItem.Id);
+            if (cartDB != null)
+            {
+                cartDB.Count += count;
+            }
+        }
+        public void DecrementalCartItem(Cart cartItem, int count)
+        {
+            var cartDB = _context.Carts.FirstOrDefault(x => x.Id == cartItem.Id);
+            if (cartDB != null)
+            {
+                cartDB.Count -= count;
+            }
+        }
         public void Update(T entity)
         {
             _dbSet.Update(entity);

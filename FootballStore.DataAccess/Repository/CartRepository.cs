@@ -11,22 +11,6 @@ namespace FootballStore.DataAccess.Repository
         {
             _context = context;
         }
-        public void IncrementCartItem(Cart cartItem, int count)
-        {
-            var cartDB = _context.Carts.FirstOrDefault(x => x.Id == cartItem.Id);
-            if (cartDB != null)
-            {
-                cartDB.Count += count;
-            }
-        }
-        public void DecrementalCartItem(Cart cartItem, int count)
-        {
-            var cartDB = _context.Carts.FirstOrDefault(x => x.Id == cartItem.Id);
-            if (cartDB != null)
-            {
-                cartDB.Count -= count;
-            }
-        }
 
     }
 }

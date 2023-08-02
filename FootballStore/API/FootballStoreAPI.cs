@@ -1,8 +1,6 @@
-﻿using AspNetCore;
-using FootballStore.DataAccess.Repository.Interfaces;
+﻿using FootballStore.DataAccess.Repository.Interfaces;
 using FootballStore.Models;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Packaging.Signing;
 
 
 namespace FootballStore.API
@@ -16,7 +14,7 @@ namespace FootballStore.API
         {
             _action = action;
         }
-        
+
         [HttpGet]
         public IActionResult GetAllProducts()
         {

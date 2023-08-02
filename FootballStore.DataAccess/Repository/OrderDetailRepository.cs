@@ -1,5 +1,4 @@
 ﻿using FootballStore.DataAccess.Data;
-using FootballStore.DataAccess.Repository.Interfaces;
 using FootballStore.Models;
 
 namespace FootballStore.DataAccess.Repository

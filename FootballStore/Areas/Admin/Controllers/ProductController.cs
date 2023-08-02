@@ -26,11 +26,11 @@ namespace FootballStore.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            
+
             return View();
         }
 
-        
+
 
         [HttpGet]
         public IActionResult CreateUpdate(int? id)
@@ -121,7 +121,7 @@ namespace FootballStore.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteData(int? id)
         {
-            
+
             var product = _action.Product.GetT(x => x.Id == id);
             if (product == null)
             {

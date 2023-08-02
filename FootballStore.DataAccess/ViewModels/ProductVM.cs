@@ -11,7 +11,6 @@ namespace FootballStore.DataAccess.ViewModels
         public IEnumerable<Product> products { get; set; } = new List<Product>();
         [ValidateNever]
         public IEnumerable<SelectListItem> Categories { get; set; }
-        //public IEnumerable<Category> CategoryList { get; set; }
 
     }
 }

@@ -88,7 +88,7 @@ namespace FootballStore.Areas.Customer.Controllers
 
             _action.Cart.Delete(cart);
             _action.Save();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Order");
 
         }
         [HttpGet]
@@ -120,5 +120,6 @@ namespace FootballStore.Areas.Customer.Controllers
             _action.Save();
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

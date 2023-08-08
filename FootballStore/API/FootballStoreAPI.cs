@@ -2,6 +2,8 @@
 using FootballStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot.Types;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace FootballStore.API
@@ -16,6 +18,19 @@ namespace FootballStore.API
             _action = action;
         }
 
+        /// <summary>
+        /// Получение списка товаров
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>Список товаров</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/products
+        ///
+        /// </remarks>
+        /// <response code="200">Возвращает список товаров</response>
+        /// <response code="400">Если каталог товаров пуст</response>
         [HttpGet]
         public IActionResult GetAllProducts()
         {

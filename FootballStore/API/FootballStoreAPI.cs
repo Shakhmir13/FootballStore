@@ -1,9 +1,7 @@
 ﻿using FootballStore.DataAccess.Repository.Interfaces;
+using FootballStore.DataAccess.ViewModels;
 using FootballStore.Models;
 using Microsoft.AspNetCore.Mvc;
-using Telegram.Bot.Types;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace FootballStore.API
@@ -30,7 +28,7 @@ namespace FootballStore.API
         ///
         /// </remarks>
         /// <response code="200">Возвращает список товаров</response>
-        /// <response code="400">Если каталог товаров пуст</response>
+        /// <response code="404">Если каталог товаров пуст</response>
         [HttpGet]
         public IActionResult GetAllProducts()
         {
@@ -38,6 +36,19 @@ namespace FootballStore.API
             return Ok(products);
         }
 
+        /// <summary>
+        /// Получение товара по id
+        /// </summary>
+        /// <param name="item">id товара</param>
+        /// <returns>Товар</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/products/1
+        ///
+        /// </remarks>
+        /// <response code="200">Возвращает товар</response>
+        /// <response code="404">Если товар не найден</response>
         [HttpGet("{id}")]
         public IActionResult GetProductById(int id)
         {
@@ -50,20 +61,20 @@ namespace FootballStore.API
         }
 
         [HttpPost]
-        public IActionResult CreateNewProduct([FromBody] Product product)
+        public IActionResult CreateNewProduct([FromBody] ProductVM vm)
         {
-            if (product == null) { return BadRequest("Некорректные данные"); }
-            _action.Product.Add(product);
+            if (vm == null) { return BadRequest("Некорректные данные"); }
+            _action.Product.Add(vm.product);
             _action.Save();
-            return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetProductById), new { id = vm.product.Id }, vm);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProductById(int id, [FromBody] Product updatedproduct)
+        public IActionResult UpdateProductById(int id, [FromBody] ProductVM updatedproduct)
         {
             var product = _action.Product.GetT(x => x.Id == id);
             if (product == null) { return NotFound("Продукт не найден."); }
-            _action.Product.Update(updatedproduct);
+            _action.Product.Update(updatedproduct.product);
             _action.Save();
             return Ok(product);
         }
@@ -108,12 +119,12 @@ namespace FootballStore.API
         }
 
         [HttpPost]
-        public IActionResult CreateNewCategory([FromBody] Category category)
+        public IActionResult CreateNewCategory([FromBody] CategoryVM category)
         {
             if (category == null) { return BadRequest("Некорректные данные"); }
-            _action.Category.Add(category);
+            _action.Category.Add(category.category);
             _action.Save();
-            return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
+            return CreatedAtAction(nameof(GetCategoryById), new { id = category.category.Id }, category);
         }
 
         [HttpPut("{id}")]

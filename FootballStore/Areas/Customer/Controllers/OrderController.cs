@@ -1,6 +1,5 @@
 ﻿using FootballStore.DataAccess.Repository.Interfaces;
 using FootballStore.DataAccess.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -11,7 +10,7 @@ namespace FootballStore.Areas.Customer.Controllers
     {
         private IActionUnit _action;
         public OrderVM vm { get; set; }
-        public OrderController(IActionUnit action) 
+        public OrderController(IActionUnit action)
         {
             _action = action;
         }
